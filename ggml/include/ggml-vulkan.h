@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 #define GGML_VK_NAME "Vulkan"
-#define GGML_VK_MAX_DEVICES 16
+#define GGML_VK_MAX_DEVICES 32
 
 // backend API
 GGML_BACKEND_API ggml_backend_t ggml_backend_vk_init(size_t dev_num);
