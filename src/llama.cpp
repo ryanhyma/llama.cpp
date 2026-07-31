@@ -80,7 +80,7 @@ struct llama_sampler_chain_params llama_sampler_chain_default_params() {
 }
 
 size_t llama_max_devices(void) {
-    return 16;
+    return 32;
 }
 
 size_t llama_max_tensor_buft_overrides() {

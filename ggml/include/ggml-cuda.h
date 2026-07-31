@@ -17,7 +17,7 @@ extern "C" {
 #define GGML_CUDA_NAME "CUDA"
 #define GGML_CUBLAS_NAME "cuBLAS"
 #endif
-#define GGML_CUDA_MAX_DEVICES       16
+#define GGML_CUDA_MAX_DEVICES       32
 
 // backend API
 GGML_BACKEND_API ggml_backend_t ggml_backend_cuda_init(int device);

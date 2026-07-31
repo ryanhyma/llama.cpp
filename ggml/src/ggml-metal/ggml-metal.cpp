@@ -11,7 +11,7 @@
 #include <string>
 
 #define GGML_METAL_NAME "MTL"
-#define GGML_METAL_MAX_DEVICES 16
+#define GGML_METAL_MAX_DEVICES 32
 
 // number of Metal devices
 // note: can be overridden with GGML_METAL_DEVICES env to simulate virtual devices

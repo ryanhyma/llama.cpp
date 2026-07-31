@@ -14,7 +14,7 @@ extern "C" {
 static_assert(GGML_OP_COUNT == 101, "GGML_OP_COUNT has changed - update RPC_PROTO_PATCH_VERSION");
 #endif
 
-#define GGML_RPC_MAX_SERVERS       16
+#define GGML_RPC_MAX_SERVERS       32
 
 // backend API
 GGML_BACKEND_API ggml_backend_t ggml_backend_rpc_init(const char * endpoint, uint32_t device);

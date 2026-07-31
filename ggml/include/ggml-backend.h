@@ -355,7 +355,7 @@ extern "C" {
     // Meta backend
     //
 
-#define GGML_BACKEND_META_MAX_DEVICES 16
+#define GGML_BACKEND_META_MAX_DEVICES 32
 
     enum ggml_backend_meta_split_axis {
         // tensor split by tensor dimensions:
