@@ -7,6 +7,7 @@
 #include "llama-mmap.h"
 #include "llama-cparams.h"
 #include "llama-model-loader.h"
+#include "llama-static-expert.h"
 
 #include "llama-kv-cache.h"
 #include "llama-kv-cache-iswa.h"
@@ -1059,6 +1060,9 @@ struct llama_model::impl {
 
     bool has_tensor_overrides;
 
+    // Optional opt-in static expert placement. Null preserves the existing path.
+    std::unique_ptr<llama_static_expert_placement> static_expert;
+
     std::vector<float> tensor_split_owned;
 };
 
@@ -1257,6 +1261,19 @@ void llama_model_base::load_hparams(llama_model_loader & ml) {
 
     // per-arch hparams
     load_arch_hparams(ml);
+
+    // Static expert placement is completely opt-in. The sidecar is created only
+    // after model dimensions are known; the default path remains untouched.
+    pimpl->static_expert = llama_static_expert_placement::create(
+        params.static_expert,
+        hparams.n_layer_all,
+        hparams.n_expert);
+
+    if (pimpl->static_expert) {
+        throw std::runtime_error(
+            "static expert placement mapping is validated, but runtime expert "
+            "dispatch is not implemented yet");
+    }
 
     pimpl->n_bytes = ml.n_bytes;
 
@@ -2497,6 +2514,7 @@ llama_model_params llama_model_default_params() {
         /*.no_host                     =*/ false,
         /*.no_alloc                    =*/ false,
         /*.load_mtp                    =*/ false,
+        /*.static_expert               =*/ nullptr,
     };
 
     return result;

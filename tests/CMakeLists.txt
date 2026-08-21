@@ -279,6 +279,14 @@ if (NOT LLAMA_SANITIZE_ADDRESS AND NOT GGML_SCHED_NO_REALLOC)
 endif()
 llama_build_and_test(test-backend-ops.cpp)
 
+# Opt-in static MoE expert placement foundation. This test intentionally links
+# the llama library so it can exercise the internal sidecar without changing
+# the default model-loading path.
+add_executable(test-static-expert test-static-expert.cpp)
+target_include_directories(test-static-expert PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../src)
+target_link_libraries(test-static-expert PRIVATE llama)
+add_test(NAME test-static-expert COMMAND $<TARGET_FILE:test-static-expert>)
+
 llama_build_and_test(test-model-load-cancel.cpp LABEL "model")
 llama_build_and_test(test-autorelease.cpp       LABEL "model")
 llama_build_and_test(test-backend-sampler.cpp   LABEL "model")

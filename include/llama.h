@@ -304,6 +304,23 @@ extern "C" {
         ggml_backend_buffer_type_t buft;
     };
 
+    // Static MoE expert placement is opt-in. The default model parameters keep
+    // the existing expert loading and execution path unchanged.
+    enum llama_static_expert_dispatch_mode {
+        LLAMA_STATIC_EXPERT_DISPATCH_HOST      = 0,
+        LLAMA_STATIC_EXPERT_DISPATCH_FIXED_GPU = 1, // Reserved for a future implementation.
+    };
+
+    struct llama_static_expert_params {
+        bool enabled;
+        int32_t target_layer;
+        int32_t owner_count;
+        const int32_t * expert_to_owner;
+        int32_t expert_to_owner_count;
+        enum llama_static_expert_dispatch_mode dispatch_mode;
+        bool require_peer_copy;
+    };
+
     struct llama_model_params {
         // NULL-terminated list of devices to use for offloading (if NULL, all available devices are used)
         ggml_backend_dev_t * devices;
@@ -339,6 +356,9 @@ extern "C" {
         bool no_host;         // bypass host buffer allowing extra buffers to be used
         bool no_alloc;        // only load metadata and simulate memory allocations
         bool load_mtp;        // whether to load MTP layers
+
+        // Optional static MoE expert placement. NULL preserves the existing path.
+        const struct llama_static_expert_params * static_expert;
     };
 
     struct llama_sampler_seq_config {

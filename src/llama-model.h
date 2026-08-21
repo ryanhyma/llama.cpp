@@ -17,6 +17,7 @@
 struct llama_cparams;
 struct llama_ubatch;
 struct llama_model_loader;
+class llama_static_expert_placement;
 
 // available models
 enum llm_type {
